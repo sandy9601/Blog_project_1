@@ -15,7 +15,7 @@ const AuthorValidation=require("../Middleware/AuthorValidation")
 
 router.post("/authors",AuthorValidation.AuthorValidation, AuhtorController.authors)
 
-router.post("/blogs",CommonMiddleware.mid1,mid.middleAuth,isdeleted.mid3,BlogController.blogs)
+router.post("/blogs",mid.middleAuth,BlogController.blogs)
 
 router.get("/blogs", BlogController.getblogs)
 
@@ -27,5 +27,7 @@ router.delete("/blogs",BlogController.DeletedQuery)
 
 router.post("/login", isdeleted.mid3, UserController.authorlogin)
 
+
 module.exports=router
+
 

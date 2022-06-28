@@ -1,5 +1,4 @@
 const AuthorModel = require("../Models/AuthorModel")
-const validator=require("email-validator")
 
 //Creating Author Question
 const AuthorValidation =async function(req,res,next){
@@ -9,21 +8,17 @@ const AuthorValidation =async function(req,res,next){
     if(Object.keys(data).length===0){
        return res.status(400).send({status: false,msg:"body couldnot be empty"})
     }
-
     if(!data.fname){
         return res.status(400).send({status: false,msg: "first name should be present"})
     }
-    
     if(typeof data.fname!="string"){
         return res.status(400).send({status: false,msg:" first name must be string"})
     }
-
     let firstname=data.fname
     let Firstname=firstname.trim()
     if(firstname!=Firstname){
-        return res.status(400).send({status:false ,msg: "space not allowed in Last Name"})
+        return res.status(400).send({status:false ,msg: "space not allowed in first Name"})
     }
-    
     if(!data.lname){
         return res.status(400).send({status: false,msg: "last name should be present"})
     }
@@ -53,15 +48,12 @@ if(!enums){
 if(!data.email){
     return res.status(400).send({status: false,msg:"email should be present"})
 }
-    // let regex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/
-    // ///^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-    // let testmails=data.email
-    // let emailvalidation= regex.test(testmails)
-    let isValidEmail = validator.validate(data.email)
+let testemail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.email)
 
-    if(isValidEmail){
-        return res.status(400).send({status: false,msg: "enter a valid email id"})
-    }
+if (!testemail) {
+   return res.status(400).send({ status: false, messege: "invalid email" })
+}
+
     let email=await AuthorModel.find({email:data.email})
     if(email.length>0&&data.email===email[0].email){
         return res.status(400).send({status: false,msg: "email already resgistered"})
@@ -85,4 +77,3 @@ catch(err){
 
 
 module.exports.AuthorValidation=AuthorValidation
-

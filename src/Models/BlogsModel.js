@@ -1,5 +1,3 @@
-
-
 const mongoose = require("mongoose")
 const ObjectId = mongoose.Schema.Types.ObjectId
 
@@ -7,41 +5,49 @@ const BlogsSchema = new mongoose.Schema(
     {
         title: {
             type: String,
-            require: true
+            require: 'Blog title is required',
+            trim :true
         },
         body: {
             type: String,
-            require: true
+            require: 'Blog body is required',
+            trim :true
         },
         authorId:{
             type: ObjectId,
-            ref: "AuthorModel",
-            require: true
+            refs: "AuthorModel",
+            require: 'Blog Author is required'
         },
-        tags: {
-            type: [String]
-        },
+        tags:[{
+            type: String,
+            trim: true
+        }],
         category: {
             type: String,
-            require: true
+            require:'Blog Category is required',
+            trim: true
         },
-        subcategory: {
-            type: [String]
+        subcategory: [{
+            type: String,
+            trim: true
+        }],
+        isPublished: {
+            type: Boolean,
+            default: false
         },
-        deleteAt: {
-            type: Date
+        publishedAt: {
+            type: Date,
+            default: null
         },
         isDeleted: {
             type: Boolean,
             default: false
         },
-        publishedAt: {
-            type: Date
+        deleteAt: {
+            type: Date,
+            default:null
         },
-        isPublished: {
-            type: Boolean,
-            default: false
-        },
+
     },
     { timetamps: true }
 );
